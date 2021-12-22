@@ -19,6 +19,10 @@ export class HeaderComponent implements OnInit {
     this.listenToFileUpload();
   }
 
+  public download(filename: string): void {
+    this.filesService.download(filename);
+  }
+
   private fetchInitialFilenames(): void {
     this.filesService.getFilenames().subscribe((names: string[]) => this.files = names);
   }
