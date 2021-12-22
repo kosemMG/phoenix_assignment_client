@@ -1,13 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { FilesService } from './files.service';
 import { UploadResponse } from '../models/upload-response';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css']
 })
-export class FileUploadComponent {
+export class FileUploadComponent implements OnDestroy {
   @Input() requiredFileTypes: string;
 
   public originalFilename: string;
@@ -15,10 +16,14 @@ export class FileUploadComponent {
 
   private file: File;
   private extension: string;
+  private uploadSubscription: Subscription;
 
   constructor(private filesService: FilesService) {
   }
 
+  public ngOnDestroy(): void {
+    this.uploadSubscription.unsubscribe();
+  }
 
   public onFileSelected(event: any): void {
     this.file = event.target?.files[0];
@@ -41,7 +46,7 @@ export class FileUploadComponent {
     const formData = new FormData();
     formData.append('file', this.file, filename);
 
-    this.filesService.upload(formData)
-      .subscribe((res: UploadResponse) => this.filesService.dispatchUploadResponse(res));
+    this.uploadSubscription = this.filesService.upload(formData)
+      .subscribe((response: UploadResponse) => this.filesService.dispatchUploadResponse(response));
   }
 }
