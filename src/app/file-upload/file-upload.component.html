@@ -1,0 +1,19 @@
+<div class="upload-box">
+  <input [(ngModel)]="newFilename" type="text" class="filename" placeholder="הכנס כותרת(input)">
+
+  <div class="upload">
+    <input (change)="onFileSelected($event)"
+           [accept]="requiredFileTypes"
+           class="actual-upload-btn"
+           id="actual-btn"
+           type="file">
+
+    <label for="actual-btn">
+      <img src="assets/images/upload.svg" alt="upload-button" class="custom-upload-btn" title="Upload">
+    </label>
+
+    <span>{{ originalFilename ||  'העלה קובץ'}}</span>
+  </div>
+
+  <button (click)="uploadFile()" class="submit-btn">שלח</button>
+</div>

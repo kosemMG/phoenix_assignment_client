@@ -1,0 +1,58 @@
+.header {
+  border-bottom: 1px solid var(--dark-colour);
+  margin-top: 1rem;
+}
+
+.round-btn {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  background-color: pink;
+  border: 1px solid var(--dark-colour);
+  border-radius: 50%;
+  margin-left: 10rem;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 2rem;
+  right: 1rem;
+  border: 1px solid #000;
+  cursor: initial;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+}
+
+.dropdown-menu li {
+  margin: 0.5rem;
+}
+
+.dropdown-menu li div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.download-btn {
+  width: 1.2rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.download-btn:hover {
+  opacity: 0.5;
+}
+
+.badge {
+  position: absolute;
+  border: 1px solid var(--dark-colour);
+  border-radius: 50%;
+  top: -0.5rem;
+  right: -0.25rem;
+  padding: 1px 3px;
+  background-color: #fff;
+}

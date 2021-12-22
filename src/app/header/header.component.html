@@ -1,0 +1,18 @@
+<header class="header">
+  <div (click)="menuOpened = !menuOpened" class="round-btn" title="Open file list">
+
+    <div *ngIf="files.length" class="badge">{{ files.length }}</div>
+
+    <div *ngIf="menuOpened" class="dropdown-menu">
+      <ul>
+        <li *ngFor="let filename of files">
+          <div>
+            <img src="assets/images/download.svg" alt="download-button" class="download-btn" title="Download">
+            {{ filename }}
+          </div>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
