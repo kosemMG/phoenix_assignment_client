@@ -1,7 +1,9 @@
 <header class="header">
   <div (click)="menuOpened = !menuOpened" class="round-btn" title="Open file list">
 
-    <div *ngIf="files.length" class="badge">{{ files.length }}</div>
+    <div *ngIf="files && files.length" class="badge">
+      {{ files.length }}
+    </div>
 
     <div *ngIf="menuOpened" class="dropdown-menu">
       <ul>

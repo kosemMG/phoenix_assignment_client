@@ -6,3 +6,8 @@
   flex-direction: column;
 }
 
+.message {
+  position: absolute;
+  bottom: 10rem;
+}
+

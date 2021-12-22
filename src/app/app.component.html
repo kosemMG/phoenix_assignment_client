@@ -1,9 +1,14 @@
-<app-header [files]="files"></app-header>
+<app-header></app-header>
 
 <div class="container">
 
   <app-file-upload [requiredFileTypes]="'application/pdf,.doc,.docx,application/msword,' +
      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'">
   </app-file-upload>
+
+  <div *ngIf="messageShown" [style.color]="result === uploadResult.Succeeded ? 'green' : 'red'"
+       class="message">
+    {{ message }}
+  </div>
 
 </div>

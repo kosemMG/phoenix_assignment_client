@@ -1,4 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FilesService } from '../file-upload/files.service';
+import { UploadResponse } from '../models/upload-response';
 
 @Component({
   selector: 'app-header',
@@ -6,13 +8,22 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  @Input() files: string[];
-
   public menuOpened = false;
+  public files: string[] = [];
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(private filesService: FilesService) {
   }
 
+  public ngOnInit(): void {
+    this.fetchInitialFilenames();
+    this.listenToFileUpload();
+  }
+
+  private fetchInitialFilenames(): void {
+    this.filesService.getFilenames().subscribe((names: string[]) => this.files = names);
+  }
+
+  private listenToFileUpload(): void {
+    this.filesService.upload$.subscribe((response: UploadResponse) => this.files = response.files!);
+  }
 }

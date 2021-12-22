@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FilesService} from "./files.service";
+import { Component, Input } from '@angular/core';
+import { FilesService } from './files.service';
+import { UploadResponse } from '../models/upload-response';
 
 @Component({
   selector: 'app-file-upload',
@@ -38,9 +39,9 @@ export class FileUploadComponent {
       : this.originalFilename;
 
     const formData = new FormData();
-    formData.append(filename, this.file);
+    formData.append('file', this.file, filename);
 
     this.filesService.upload(formData)
-      .subscribe((files: string[]) => console.log(files));
+      .subscribe((res: UploadResponse) => this.filesService.dispatchUploadResponse(res));
   }
 }
