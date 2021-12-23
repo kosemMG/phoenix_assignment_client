@@ -6,6 +6,8 @@ import {HeaderComponent} from './header/header.component';
 import {FileUploadComponent} from './file-upload/file-upload.component';
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
+import { StoreModule } from '@ngrx/store';
+import { appReducer } from './store/app.reducer';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import {FormsModule} from "@angular/forms";
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot(appReducer)
   ],
   providers: [],
   bootstrap: [AppComponent]

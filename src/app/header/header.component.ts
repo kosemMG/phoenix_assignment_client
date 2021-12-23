@@ -1,29 +1,27 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FilesService } from '../file-upload/files.service';
-import { UploadResponse } from '../models/upload-response';
-import { Subscription } from 'rxjs';
+import { UploadResponseState } from '../models/upload-response-state';
+import { Store } from '@ngrx/store';
+import { AppState } from '../models/app-state';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
   public menuOpened = false;
   public files: string[] = [];
 
-  private uploadSubscription: Subscription;
 
-  constructor(private filesService: FilesService) {
+  constructor(private filesService: FilesService, private store: Store<AppState>) {
   }
 
   public ngOnInit(): void {
     this.fetchInitialFilenames();
-    this.listenToFileUpload();
-  }
 
-  public ngOnDestroy(): void {
-    this.uploadSubscription.unsubscribe();
+    this.store.select('upload')
+      .subscribe((response: UploadResponseState) => this.files = [...response.files]);
   }
 
   public download(filename: string): void {
@@ -31,11 +29,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private fetchInitialFilenames(): void {
-    this.filesService.getFilenames().subscribe((names: string[]) => this.files = names);
-  }
-
-  private listenToFileUpload(): void {
-    this.uploadSubscription = this.filesService.upload$
-      .subscribe((response: UploadResponse) => this.files = response.files!);
+    this.filesService.fetchFilenames();
   }
 }

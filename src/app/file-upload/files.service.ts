@@ -1,31 +1,32 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { UploadResponse } from '../models/upload-response';
+import { Store } from '@ngrx/store';
+import { UploadResponseState } from '../models/upload-response-state';
+import * as Upload from '../store/upload.actions';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilesService {
-  private apiUrl = 'http://localhost:5000/api/files';
 
-  private uploadSource = new Subject<UploadResponse>();
-
-  public upload$: Observable<UploadResponse> = this.uploadSource.asObservable();
-
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private store: Store<{ upload: UploadResponseState }>) {
   }
 
-  public getFilenames(): Observable<string[]> {
-    return this.http.get<string[]>(this.apiUrl + '/names');
+  public fetchFilenames(): void {
+    this.http.get<string[]>(environment.apiUrl + '/names').subscribe((names: string[]) => {
+      this.store.dispatch(new Upload.InitFiles(names));
+    });
   }
 
-  public upload(formData: FormData): Observable<UploadResponse> {
-    return this.http.post<UploadResponse>(this.apiUrl + '/upload', formData);
+  public upload(formData: FormData): void {
+    this.http.post<UploadResponseState>(environment.apiUrl + '/upload', formData).subscribe((response: UploadResponseState) => {
+      this.store.dispatch(new Upload.UploadFile({ ...response }));
+    });
   }
 
   public download(filename: string): void {
-    this.http.get(`${this.apiUrl}/download?filename=${filename}`, { responseType: 'blob' as 'json' })
+    this.http.get(`${environment.apiUrl}/download?filename=${filename}`, { responseType: 'blob' as 'json' })
       .subscribe((response: any) => {
           const dataType = response.type;
           const binaryData = [];
@@ -43,9 +44,5 @@ export class FilesService {
           downloadLink.remove();
         }
       );
-  }
-
-  public dispatchUploadResponse(response: UploadResponse): void {
-    this.uploadSource.next(response);
   }
 }
