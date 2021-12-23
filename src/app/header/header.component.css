@@ -10,7 +10,7 @@
   background-color: pink;
   border: 1px solid var(--dark-colour);
   border-radius: 50%;
-  margin-left: 10rem;
+  margin-left: 15rem;
   cursor: pointer;
 }
 
@@ -20,6 +20,8 @@
   right: 1rem;
   border: 1px solid #000;
   cursor: initial;
+  width: max-content;
+  max-width: 15rem;
 }
 
 .dropdown-menu ul {
