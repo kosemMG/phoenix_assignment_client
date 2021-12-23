@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { UploadResponseState } from '../models/upload-response-state';
 import * as Upload from '../store/upload.actions';
@@ -20,8 +20,13 @@ export class FilesService {
   }
 
   public upload(formData: FormData): void {
-    this.http.post<UploadResponseState>(environment.apiUrl + '/upload', formData).subscribe((response: UploadResponseState) => {
-      this.store.dispatch(new Upload.UploadFile({ ...response }));
+    this.http.post<UploadResponseState>(environment.apiUrl + '/upload', formData).subscribe({
+      next: (response: UploadResponseState) => {
+        this.store.dispatch(new Upload.UploadFile({ ...response }));
+      },
+      error: (response: HttpErrorResponse) => {
+        this.store.dispatch(new Upload.UploadFile({ ...response.error } as UploadResponseState));
+      }
     });
   }
 
